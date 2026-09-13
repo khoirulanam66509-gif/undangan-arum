@@ -54,7 +54,11 @@ body::before{
 .p5{width:13px;height:13px; left:20%; top:-7%; animation-duration:18s; animation-delay:11s;}
 
 @keyframes drift{
-  to{ transform:translateY(112vh) rotate(220deg); }
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(25px, 28vh) rotate(90deg); }
+  50% { transform: translate(-20px, 56vh) rotate(180deg); }
+  75% { transform: translate(25px, 84vh) rotate(270deg); }
+  100% { transform: translate(-15px, 112vh) rotate(350deg); }
 }
 @media (prefers-reduced-motion: reduce){
   .petal{animation:none; display:none;}
@@ -114,6 +118,11 @@ body::before{
   border-radius:50%;
   display:block;
   border:4px solid #fffdfb;
+  animation: photoZoom 6s ease-in-out infinite alternate;
+}
+@keyframes photoZoom {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.06); }
 }
 @keyframes spin-slow{ to{ transform:rotate(360deg); } }
 @media (prefers-reduced-motion: reduce){
@@ -140,6 +149,22 @@ body::before{
   cursor:pointer;
   box-shadow:0 14px 30px -12px rgba(180,135,74,0.55);
   transition:transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.open-btn::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-25deg);
+  animation: shineWave 4s infinite;
+}
+@keyframes shineWave {
+  0% { left: -100%; }
+  20% { left: 200%; }
+  100% { left: 200%; }
 }
 .open-btn:hover{ transform:translateY(-2px); box-shadow:0 18px 34px -12px rgba(180,135,74,0.6); }
 .open-btn:active{ transform:translateY(0); }
@@ -160,6 +185,13 @@ body::before{
   background:linear-gradient(160deg, var(--gold-soft), var(--rose));
   border-radius:230px 230px 18px 18px;
   padding:9px;
+  transform: scale(0.9);
+  opacity: 0;
+  transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s ease;
+}
+.shell.opened{
+  transform: scale(1);
+  opacity: 1;
 }
 
 .card{
@@ -169,6 +201,13 @@ body::before{
   text-align:center;
   position:relative;
   overflow:hidden;
+}
+.card.show {
+  animation: floatCard 6s ease-in-out infinite 1.2s;
+}
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
 .card > *{
@@ -197,6 +236,40 @@ body::before{
 }
 @media (prefers-reduced-motion: reduce){
   .card > *{ opacity:1; transform:none; animation:none !important; }
+}
+
+@keyframes shimmerOrn {
+  0%, 100% { filter: drop-shadow(0 0 0px rgba(180,135,74, 0)); }
+  50% { filter: drop-shadow(0 0 6px rgba(180,135,74, 0.6)); }
+}
+@keyframes shimmerText {
+  0%, 100% { text-shadow: 0 0 0px rgba(180,135,74, 0); }
+  50% { text-shadow: 0 0 8px rgba(180,135,74, 0.6); }
+}
+@keyframes riseInBottom{
+  to{ opacity:1; transform:translateY(0) rotate(180deg); }
+}
+
+.card.show > .top-motif {
+  animation-name: riseIn, shimmerOrn;
+  animation-duration: 0.75s, 3s;
+  animation-timing-function: ease, ease-in-out;
+  animation-fill-mode: forwards, none;
+  animation-iteration-count: 1, infinite;
+}
+.card.show > .bismillah {
+  animation-name: riseIn, shimmerText;
+  animation-duration: 0.75s, 3s;
+  animation-timing-function: ease, ease-in-out;
+  animation-fill-mode: forwards, none;
+  animation-iteration-count: 1, infinite;
+}
+.card.show > .bottom-motif {
+  animation-name: riseInBottom, shimmerOrn;
+  animation-duration: 0.75s, 3s;
+  animation-timing-function: ease, ease-in-out;
+  animation-fill-mode: forwards, none;
+  animation-iteration-count: 1, infinite;
 }
 
 .top-motif{ width:38px; margin:0 auto 12px; opacity:0.8; }
@@ -232,6 +305,7 @@ body::before{
   border-radius:50%;
   display:block;
   border:4px solid #fffdfb;
+  animation: photoZoom 6s ease-in-out infinite alternate;
 }
 
 .kicker{
@@ -273,11 +347,17 @@ body::before{
   margin:0 0 26px;
 }
 .divider .l, .divider .r{
-  height:1px;
-  width:60px;
-  background:var(--line);
+  height: 1px;
+  width: 60px;
+  background: linear-gradient(90deg, var(--line) 0%, rgba(180,135,74,0.6) 50%, var(--line) 100%);
+  background-size: 200% 100%;
+  animation: shineLine 4s linear infinite;
 }
-.divider svg{ width:20px; height:20px; opacity:0.85; }
+@keyframes shineLine {
+  0% { background-position: -100% 0; }
+  100% { background-position: 100% 0; }
+}
+.divider svg{ width:20px; height:20px; opacity:0.85; animation: shimmerOrn 3s ease-in-out infinite; }
 
 .invite-text{
   font-size:13.5px;
